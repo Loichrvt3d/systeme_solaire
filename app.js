@@ -120,14 +120,14 @@ var  createScene = function() {
     name: "Mercure",
     intro: "Mercure est la planète la plus proche du Soleil, mais aussi la plus petite du Système solaire.",
     details: "Type de planète : Tellurique \nSuperficie : 7,48 × 10⁷ km²\nMasse : 3,301 × 10²³ kg \nGravité : 3,70 m/s² \nPériode de révolution : 88j",
-    image: "gif/mercure.gif",
+    image: "mercure.gif",
     color: "#757575"
   },
   "VENUS": {
     name: "Vénus",
     intro: "Vénus est la deuxième planète du Système solaire par ordre d'éloignement au Soleil, et la sixième plus grosse aussi bien par la masse que le diamètre.",
     details: "Type de planète : Tellurique\nSuperficie : 4,60 × 10⁸ km² \nMasse : 4,87 × 10²⁴ kg\nGravité : 8,87 m/s²\nPériode de révolution : 225j",
-    image: "gif/venus.gif",
+    image: "venus.gif",
     color: "#f3753f"
   },
   "TERRE": {
@@ -138,56 +138,56 @@ var  createScene = function() {
     "Masse : 5,972 × 10²⁴ kg\n" +
     "Gravité : 9,806 m/s²\n" +
     "Période de révolution : 365j",
-    image: "gif/earth.gif",
+    image: "earth.gif",
     color: "#54b8d6"
   },
   "MARS": {
     name: "Mars",
     intro: "Mars est la quatrième planète du Système solaire par ordre croissant de la distance au Soleil et la deuxième par ordre croissant de la taille et de la masse.",
     details: "Type de planète : Tellurique \nSuperficie : 144 798 500 km² \nMasse : 6,418 × 10²³ kg\nGravité : 3,711 m/s² \nPériode de révolution : 686j",
-    image: "gif/mars.gif",
+    image: "mars.gif",
     color: "#ff4500"
   },
   "JUPITER": {
     name: "Jupiter",
     intro: "Jupiter est la cinquième planète du Système solaire par ordre d'éloignement au Soleil, et la plus grande par la taille et la masse devant Saturne, qui est comme elle une planète géante gazeuse.",
     details: "Type de planète : Géante gazeuse\nSuperficie : 6,146 × 10¹⁰ km²\nMasse : 1,898 × 10²⁷ kg\nGravité : 24,796 m/s² \nPériode de révolution : 4 332j",
-    image: "gif/jupiter.gif",
+    image: "jupiter.gif",
     color: "#a28f7d"
   },
   "SATURNE_primitive1": {
     name: "Saturne",
     intro: "Saturne est la sixième planète du Système solaire par ordre d'éloignement au Soleil, et la deuxième plus grande par la taille et la masse après Jupiter. C'est une planète géante gazeuse comme Jupiter.",
     details: "Type de planète : Géante gazeuse\nSuperficie : 4,346 × 10¹⁰ km²\nMasse : 5,684 × 10²⁶ kg\nGravité : 10,44 m/s² \nPériode de révolution : 10 755j",
-    image: "gif/saturne.gif",
+    image: "saturne.gif",
     color: "#f4a460"
   },
   "NEPTUNE": {
     name: "NEPTUNE",
     intro: "Neptune est la huitième planète par ordre d'éloignement du Soleil et la plus éloignée de l'étoile dans le Système solaire qui soit connue. C'est la troisième planète la plus massive, la quatrième plus grande par la taille.",
     details: "Type de planète : Géante glacée \nSuperficie : 7,640 ×10⁹ km²\nMasse : 1,024 × 10²⁶ kg \nGravité : 11,27 m/s²\nPériode de révolution : 60 216 j",
-    image: "gif/neptune.gif",
+    image: "neptune.gif",
     color: "#6e7eda"
   },
   "URANUS": {
     name: "Uranus",
     intro: "Uranus est la septième planète du Système solaire par ordre d'éloignement du Soleil. Elle orbite autour de celui-ci à une distance d'environ 19,2 unités astronomiques (2,87 milliards de kilomètres), avec une période de révolution de 84,05 années terrestres.",
     details: "Type de planète :\nSuperficie :  8,083 × 10⁹ km²\nMasse : 8,681 × 10²⁵ kg\nGravité :  8,87 m/s²\nPériode de révolution : 30 698j",
-    image: "gif/Uranus.gif",
+    image: "Uranus.gif",
     color: "#6ec6da"
   },
   "SOLEIL": {
     name: "Soleil",
     intro: "Le Soleil est l’étoile de type naine jaune du Système solaire, qui se situe dans le bras d'Orion. Il orbite autour du centre galactique en une année galactique de 225 à 250 millions d'années",
     details: "Type : Étoile naine\nDiamètre moyen : 1 392 684 km \nMasse : 1,9885 × 10³⁰ kg\nGravité : 273,95 m/s²\n Vitesse : 217 km/s",
-    image: "gif/sun.gif",
+    image: "sun.gif",
     color: "#ffa000"
   },
   "LUNE": {
     name: "Lune",
     intro: "La Lune, est l'unique satellite naturel permanent de la planète Terre. Il s'agit du cinquième plus grand satellite naturel du Système solaire.",
     details: "Type : Satellite naturel terrestre \nSuperficie : 37 871 220,85 km²\nMasse : 7,35 × 10²² kg  kg\nGravité : 1,62 m/s² \nPériode de révolution : 27j",
-    image: "gif/lune.gif",
+    image: "lune.gif",
     color: "#6e6e6e"
   }
 };
@@ -250,7 +250,7 @@ function animatePlanetName() {
     const envTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("env.env", scene);
     scene.environmentTexture = envTexture;
 
-    const backgroundLayer = new BABYLON.Layer("backgroundLayer", "gif/fond.png", scene, true);
+    const backgroundLayer = new BABYLON.Layer("backgroundLayer", "fond.png", scene, true);
     backgroundLayer.isBackground = true;
     backgroundLayer.texture.level = 0;
 
@@ -263,4 +263,5 @@ function animatePlanetName() {
       });
       window.addEventListener('resize', () => {
           engine.resize();
+
         });
