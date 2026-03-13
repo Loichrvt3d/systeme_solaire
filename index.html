@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="Portfolio interactif en 3D avec Babylon.js.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Système solaire</title>
+  <script src="https://cdn.babylonjs.com/babylon.js"></script>
+  <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="icon" href="icon.ico" type="image/x-icon">
+
+  <link rel="preload" href="Bloppy.otf" as="font" type="font/otf" crossorigin="anonymous">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Special+Gothic+Expanded+One&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&family=Special+Gothic+Expanded+One&display=swap');
+    @font-face {
+    font-family: 'Hidone_B';
+    src: url('Hidone-Bold.otf') format('opentype');
+    font-weight: 0.01;
+    font-style: normal;
+  }
+   @font-face {
+    font-family: 'Hidone';
+    src: url('Hidone-Regular.otf') format('opentype');
+    font-weight: 0.01;
+    font-style: normal;
+  }
+     @font-face {
+    font-family: 'Hidone_T';
+    src: url('Hidone-Thin.otf') format('opentype');
+    font-weight: 1;
+    font-style: normal;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Hidone_B', sans-serif;
+    position: relative;
+     touch-action: manipulation;
+  overscroll-behavior: none;
+  }
+
+  #renderCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    touch-action: none;
+  }
+#helpBtn {
+  position: fixed;
+  width: 56px;
+  height: 56px;
+  bottom: 20px;
+  left: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 28px;
+  
+  border: none;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+#helpBtn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  #helpBtn {
+    top: 20px;
+    left: 35px;
+    bottom: auto;
+    
+    font-size: 24px;
+    width: 48px;
+    height: 48px;
+  }
+}
+
+#copyrightFooter {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 14px;
+  font-family: 'Hidone_B', sans-serif;
+  background: rgba(0,0,0,0.5);
+  padding: 6px 12px;
+  border-radius: 8px;
+  z-index: 999;
+  pointer-events: none; 
+}
+
+@media (max-width: 768px) {
+  #copyrightFooter {
+    bottom: 70px; 
+    font-size: 12px;
+  }
+}
+
+#infoPanel {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 350px;
+  background: rgb(253, 255, 245);
+  color: black;
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 1001;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  font-family: 'Hidone_B', sans-serif;
+}
+
+#infoPanel.show {
+  opacity: 1;
+  transform: translateY(0);
+  display: block;
+}
+
+#infoPanel h2 {
+  margin-top: 10%;
+  font-size: 60px;
+  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+
+
+}
+
+#infoPanel img {
+  width: 150px;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+
+#infoPanel p {
+  font-size: 22px;
+  line-height: 1.4;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 480px) {
+  #infoPanel {
+    top: 120px;
+    width: 75%;
+    padding: 15px;
+    left: 10%;
+    transform: translate(-50%, 0);
+    padding: 15px;
+    font-size: 18px;
+  }  
+  .intro-text {
+    font-family: 'Hidone', serif;
+    font-size: 5px;
+    color: #222;
+    margin-bottom: 0.2em;
+  }
+
+  .details-text {
+    font-family: 'Hidone_T', monospace;
+    white-space: pre-line;
+    font-size: 12px;
+    color: #444;
+  }
+#infoPanel img {
+  width: 75px;
+  border-radius: 8px;
+  margin-top: 12px;
+}
+
+}
+
+#planetName span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.5s forwards;
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#closeInfoBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 42px;
+  height: 42px;
+  background: #5b3aec;
+  border: none;
+  border-radius: 50%;
+  font-size: 26px;
+  font-weight: bold;
+  color: #fdfdfd;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+#closeInfoBtn:hover {
+  background-color: #c90c2c;
+  animation: shake 0.6s infinite ease-in-out;
+  transform: rotate(10deg);
+}
+
+@keyframes shake {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(10deg); }
+  50%  { transform: rotate(-10deg); }
+  75%  { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+
+#helpPopup {
+  display: none;
+  position: fixed;
+  top: 250px;
+  left: 20px;
+  right: 20px;
+  background: rgb(253, 255, 245);
+  color: #000;
+  padding: 20px;
+  border-radius: 12px;
+  z-index: 1001;
+  font-size: 25px;
+  line-height: 1.5;
+  font-family: 'Hidone_B', sans-serif;
+  max-width: 400px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+#helpPopup.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+#speedControls {
+ 
+  z-index: 1000;
+  display: flex;
+  gap: 10px;
+}
+#speedControls button {
+  display: inline-flex; 
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background: rgb(253, 255, 245);
+  border: none;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: bold;
+  color: #181818;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+#speedControls button:hover {
+  background-color: rgb(179, 209, 236);
+  animation: shake 0.6s infinite ease-in-out;
+  transform: rotate(10deg);
+}
+
+@keyframes shake {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(10deg); }
+  50%  { transform: rotate(-10deg); }
+  75%  { transform: rotate(10deg); }
+  100% { transform: rotate(0deg); }
+}
+
+#planetDescription {
+  font-family: Hidone;
+  font-size: 22px;
+  line-height: 1.4;
+  margin-bottom: 15px;
+  white-space: pre-line; 
+}
+
+.intro-text {
+  font-family: 'Hidone', serif;
+  font-size: 25px;
+  color: #222;
+  margin-bottom: 1em;
+}
+
+.details-text {
+  font-family: 'Hidone_T', monospace;
+  white-space: pre-line;
+  font-size: 20px;
+  color: #444;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<canvas id="renderCanvas"></canvas>
+<div id="infoPanel">
+  <h2 id="planetName">Nom de la planète</h2>
+  
+  <p id="planetIntro" class="intro-text">Description de la planète...</p>
+  <pre id="planetDetails" class="details-text">Données scientifiques...</pre>
+
+  <img id="planetImage" src="" alt="">
+  
+  <button id="closeInfoBtn" aria-label="Fermer le panneau d'information">✕</button>
+</div>
+
+
+<div id="speedControls" style="position: fixed; top: 20px; right: 20px; z-index: 1000;">
+  <button data-speed="0.5">x0.5</button>
+  <button data-speed="1">x1</button>
+  <button data-speed="2">x2</button>
+  <button data-speed="5">x5</button>
+</div>
+
+<button id="helpBtn" title="Aide" aria-label="Bouton d'aide">?</button>
+
+<div id="helpPopup">
+  <strong>Comment utiliser ?</strong><br>
+  <span style="font-family: 'Hidone_T', Courier, monospace;"><br>
+  Utilisez les boutons pour ajuster la vitesse de révolution des planètes.
+  <br>
+  Touchez une planète pour afficher des informations la concernant.
+  <br><br>
+  Appuyez à nouveau sur le bouton "?" pour fermer cette fenêtre.
+  </span>
+</div>
+<script>
+const helpBtn = document.getElementById('helpBtn');
+const helpPopup = document.getElementById('helpPopup');
+
+helpBtn.addEventListener('click', () => {
+  if (helpPopup.classList.contains("show")) {
+    helpPopup.classList.remove("show");
+    setTimeout(() => helpPopup.style.display = "none", 300);
+  } else {
+    helpPopup.style.display = "block";
+    requestAnimationFrame(() => helpPopup.classList.add("show"));
+  }
+});
+
+</script>
+
+
+<script src="app.js"></script>
+<footer id="copyrightFooter">
+  © 2025 LH Tous droits réservés.
+</footer>
+</body>
+
+</html>
